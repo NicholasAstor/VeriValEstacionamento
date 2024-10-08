@@ -23,18 +23,18 @@ Este projeto implementa um sistema de cálculo de taxa de estacionamento para um
    Use o seguinte comando para compilar o programa:
 
    ```bash
-   javac ParkingFeeCalculator.java
+   javac CalculadoraEstacionamento.java
    ```
 
 2. **Execução**:
     Após compilar, você pode rodar o programa com:
     ```bash
-    java ParkingFeeCalculator
+    java CalculadoraEstacionamento
     ```
 
 3. **Executar Testes**:
     Para rodas os teste unitários (com JUnit), use:
     ```bash
-    java -cp .:/caminho/para/junit.jar org.junit.runner.JUnitCore TestParkingFeeCalculator
+    mvn test
     ```
 

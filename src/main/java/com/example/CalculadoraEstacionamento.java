@@ -10,8 +10,21 @@ public class CalculadoraEstacionamento {
     private static final double VALOR_HORA_ADICIONAL = 2.50;
     private static final double VALOR_PERNOITE = 50.00;
     private static final int MINUTOS_CORTESIA = 15;
+    private static final LocalTime HORA_FECHA = LocalTime.of(2, 0);
+    private static final LocalTime HORA_ABRE = LocalTime.of(8, 0);
 
     public static double calcularValor(LocalDateTime entrada, LocalDateTime saida, boolean isVip) {
+LocalTime entradaTime = entrada.toLocalTime();
+LocalTime saidaTime = saida.toLocalTime();
+
+if (entradaTime.isBefore(HORA_ABRE) && entradaTime.isAfter(HORA_FECHA)) {
+    throw new IllegalArgumentException("Horário de entrada inválido");
+}
+
+if (saidaTime.isBefore(HORA_ABRE) && saidaTime.isAfter(HORA_FECHA)) {
+    throw new IllegalArgumentException("Horário de saída inválido");
+}
+
         long totalMinutos = ChronoUnit.MINUTES.between(entrada, saida);
 
         if (totalMinutos <= MINUTOS_CORTESIA) {

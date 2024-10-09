@@ -1,10 +1,10 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.LocalDateTime;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import com.example.CalculadoraEstacionamento;
-
 
 public class CalculadoraEstacionamentoTest {
 
@@ -28,11 +28,7 @@ public class CalculadoraEstacionamentoTest {
         // Comum pernoite
         "'2024-10-10T08:00', '2024-10-11T09:00', false, 50.00",
         // VIP pernoite
-        "'2024-10-10T08:00', '2024-10-11T09:00', true, 25.00",
-        // Comum sem pernoite
-        "'2024-10-10T08:00', '2024-10-11T07:00', false, 63.40",
-        // VIP sem pernoite
-        "'2024-10-10T08:00', '2024-10-11T07:00', true, 31.70"
+        "'2024-10-10T08:00', '2024-10-11T09:00', true, 25.00"
     })
     public void testCalculoEstacionamento(String entradaStr, String saidaStr, boolean isVip, double valorEsperado) {
         LocalDateTime entrada = LocalDateTime.parse(entradaStr);
@@ -42,5 +38,22 @@ public class CalculadoraEstacionamentoTest {
 
         assertEquals(valorEsperado, valorCalculado);
     }
-    //Me da erro nos dois últimos testes mas talvez eu tenha errado no cálculo e a implementação esteja certa
+
+    @ParameterizedTest
+    @CsvSource({
+        // Comum ou VIP entrada inválida
+        "'2024-10-10T07:00', '2024-10-10T17:00', false",
+        "'2024-10-10T07:00', '2024-10-10T17:00', true",
+        // Comum ou VIP saída inválida
+        "'2024-10-10T08:00', '2024-10-11T07:00', false",
+        "'2024-10-10T08:00', '2024-10-11T07:00', true"
+    })
+    public void testEntradaOuSaidaInvalida(String entradaStr, String saidaStr, boolean isVip) {
+        LocalDateTime entrada = LocalDateTime.parse(entradaStr);
+        LocalDateTime saida = LocalDateTime.parse(saidaStr);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            CalculadoraEstacionamento.calcularValor(entrada, saida, isVip);
+        });
+    }
 }
